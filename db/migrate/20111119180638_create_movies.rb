@@ -12,6 +12,6 @@ class CreateMovies < ActiveRecord::Migration
   end
 
   def down
-    drop_table :movies
+    drop_table :movies  # Delete table movies
   end
 end
