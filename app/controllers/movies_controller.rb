@@ -8,10 +8,16 @@ class MoviesController < ApplicationController
 
   def index
     #@movies = Movie.all
+    if ((session[:order] || session[:ratings]) && !params[:sort_by] && !params[:ratings])
+      redirect_to url_for(:order => session[:order], :ratings => session[:ratings])
+    end
+    session[:order] = params[:sort_by]
+    session[:ratings] = params[:ratings]
+    
     @all_ratings = Movie.all_ratings
     
     @sort_by = params[:sort_by]
-    @movies = Movie.find(:all, :order => "#{@sort_by}")
+    @movies = Movie.find(:all, :order => params[:sort_by], :conditions => {:rating => params[:ratings] == nil ? @all_ratings : params[:ratings].keys})
   end
 
   def new
@@ -42,4 +48,5 @@ class MoviesController < ApplicationController
     redirect_to movies_path
   end
   
+
 end
