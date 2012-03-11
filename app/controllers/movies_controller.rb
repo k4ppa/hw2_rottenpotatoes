@@ -13,13 +13,23 @@ class MoviesController < ApplicationController
     end
     session[:order] = params[:sort_by]
     session[:ratings] = params[:ratings]
-    
+   
     @all_ratings = Movie.all_ratings
-    
     @sort_by = params[:sort_by]
-    @movies = Movie.find(:all, :order => params[:sort_by], :conditions => {:rating => params[:ratings] == nil ? @all_ratings : params[:ratings].keys})
+    #@movies = Movie.find(:all, :order => @sort_by, :conditions => {:rating => @ratings == nil ? @all_ratings : params[:ratings].keys})
+   
+    @movies = Movie.find(:all, :conditions => {:rating => initialize_ratings}, :order => @sort_by)
   end
-
+  
+  def initialize_ratings
+    ratings = params[:ratings] 
+    if ratings == nil
+      @all_ratings
+    else
+      ratings.keys
+    end
+  end
+  
   def new
     # default: render 'new' template
   end
