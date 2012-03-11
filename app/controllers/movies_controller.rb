@@ -8,7 +8,20 @@ class MoviesController < ApplicationController
 
   def index
     #@movies = Movie.all
-    @movies = Movie.order(params[:sort])
+    flash[:title_color] = ''
+    flash[:release_date_color] = ''
+    
+    if params[:id] == 'title_header'
+#     @movies = Movie.find :all, :order => 'title'
+      @movies = Movie.order(params[:sort])
+      flash[:title_color] = 'hilite'
+    elsif params[:id] == 'release_date_header'
+#      @movies = Movie.find :all, :order => 'release_date DESC'
+      @movies = Movie.order(params[:sort])
+      flash[:release_date_color] = 'hilite'
+    else
+      @movies = Movie.all
+    end
   end
 
   def new
